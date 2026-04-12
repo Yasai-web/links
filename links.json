@@ -12,8 +12,8 @@
   {"name":"Google Keep","url":"https://keep.google.com","category":"日常","icon":"https://ssl.gstatic.com/keep/icon_2020q4v3.ico"},
   {"name":"Dropbox","url":"https://www.dropbox.com","category":"日常","icon":"dropbox.com"},
 
-  {"name":"カフェ英会話","url":"https://www.cafe-eikaiwa.jp","category":"学習","icon":"https://www.cafe-eikaiwa.jp/favicon.ico"},
-  {"name":"ミッキーハウス英会話","url":"https://www.mickeyhouse.jp","category":"学習","icon":"mickeyhouse.jp"},
+  {"name":"カフェ英会話","url":"https://www.cafe-eikaiwa.jp","category":"学習","icon":"https://www.google.com/s2/favicons?sz=64&domain=cafe-eikaiwa.jp"},
+  {"name":"ミッキーハウス英会話","url":"https://www.mickeyhouse.jp","category":"学習","icon":"https://www.google.com/s2/favicons?sz=64&domain=mickeyhouse.jp"},
   {"name":"Meetup","url":"https://www.meetup.com","category":"学習","icon":"meetup.com"},
 
   {"name":"キッズルームシビック","url":"https://www.city.bunkyo.lg.jp/b022/p001660.html","category":"子ども","icon":"https://www.city.bunkyo.lg.jp/favicon.ico"},
