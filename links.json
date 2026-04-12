@@ -1,20 +1,23 @@
 [
-  {
-    "name": "Google",
-    "url": "https://www.google.com",
-    "category": "検索",
-    "icon": "google.com"
-  },
-  {
-    "name": "YouTube",
-    "url": "https://www.youtube.com",
-    "category": "娯楽",
-    "icon": "youtube.com"
-  },
-  {
-    "name": "ChatGPT",
-    "url": "https://chat.openai.com",
-    "category": "AI",
-    "icon": "chat.openai.com"
-  }
+  {"name":"Google","url":"https://www.google.com","category":"検索","icon":"google.com"},
+  {"name":"ChatGPT","url":"https://chat.openai.com","category":"AI","icon":"chat.openai.com"},
+  {"name":"Claude","url":"https://claude.ai","category":"AI","icon":"claude.ai"},
+  {"name":"Gemini","url":"https://gemini.google.com","category":"AI","icon":"gemini.google.com"},
+  {"name":"NotebookLM","url":"https://notebooklm.google.com","category":"AI","icon":"notebooklm.google.com"},
+  {"name":"Google AI Studio","url":"https://aistudio.google.com","category":"AI","icon":"aistudio.google.com"},
+
+  {"name":"YouTube","url":"https://www.youtube.com","category":"娯楽","icon":"youtube.com"},
+
+  {"name":"Notion","url":"https://www.notion.so","category":"日常","icon":"notion.so"},
+  {"name":"Google Keep","url":"https://keep.google.com","category":"日常","icon":"keep.google.com"},
+  {"name":"Dropbox","url":"https://www.dropbox.com","category":"日常","icon":"dropbox.com"},
+
+  {"name":"カフェ英会話","url":"https://www.cafe-eikaiwa.jp","category":"学習","icon":"cafe-eikaiwa.jp"},
+  {"name":"ミッキーハウス英会話","url":"https://www.mickeyhouse.jp","category":"学習","icon":"mickeyhouse.jp"},
+  {"name":"Meetup","url":"https://www.meetup.com","category":"学習","icon":"meetup.com"},
+
+  {"name":"キッズルームシビック","url":"https://www.city.bunkyo.lg.jp/b022/p001660.html","category":"子ども","icon":"city.bunkyo.lg.jp"},
+
+  {"name":"Amazon","url":"https://www.amazon.co.jp","category":"生活","icon":"amazon.co.jp"},
+  {"name":"楽天","url":"https://www.rakuten.co.jp","category":"生活","icon":"rakuten.co.jp"}
 ]
