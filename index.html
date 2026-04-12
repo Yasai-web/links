@@ -33,13 +33,13 @@ body { font-family: sans-serif; background: #f5f5f5; padding: 1.5rem; }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* スマホ：固定3列 */
+  grid-template-columns: repeat(3, 1fr); /* スマホ：3列固定 */
   gap: 8px;
 }
 @media (min-width: 480px) { .grid { grid-template-columns: repeat(4, 1fr); } }
 @media (min-width: 640px) { .grid { grid-template-columns: repeat(5, 1fr); } }
 @media (min-width: 800px) { .grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); } }
-  
+
 .card {
   display: flex;
   flex-direction: column;
@@ -55,7 +55,7 @@ body { font-family: sans-serif; background: #f5f5f5; padding: 1.5rem; }
 }
 .card:hover { background: #f5f5f5; }
 
-.icon-wrap { width: 26px; height: 26px; }
+.icon-wrap { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
 .icon-wrap img { width: 26px; height: 26px; border-radius: 4px; object-fit: contain; }
 .icon-fb {
   width: 26px; height: 26px;
@@ -76,22 +76,22 @@ body { font-family: sans-serif; background: #f5f5f5; padding: 1.5rem; }
 
 <script>
 const links = [
-  { name: "Google",     url: "https://www.google.com",                          category: "検索", domain: "google.com" },
-  { name: "ChatGPT",    url: "https://chat.openai.com",                         category: "AI",   domain: "chat.openai.com" },
-  { name: "Claude",     url: "https://claude.ai",                               category: "AI",   domain: "claude.ai" },
-  { name: "Gemini",     url: "https://gemini.google.com",                       category: "AI",   domain: "gemini.google.com" },
-  { name: "NotebookLM", url: "https://notebooklm.google.com",                   category: "AI",   domain: "notebooklm.google.com" },
-  { name: "AI Studio",  url: "https://aistudio.google.com",                     category: "AI",   domain: "aistudio.google.com" },
-  { name: "YouTube",    url: "https://www.youtube.com",                         category: "娯楽", domain: "youtube.com" },
-  { name: "Notion",     url: "https://www.notion.so",                           category: "日常", domain: "notion.so" },
-  { name: "Google Keep",url: "https://keep.google.com",                         category: "日常", domain: "keep.google.com" },
-  { name: "Dropbox",    url: "https://www.dropbox.com",                         category: "日常", domain: "dropbox.com" },
-  { name: "カフェ英会話",  url: "https://www.cafe-eikaiwa.jp",                  category: "学習", domain: "cafe-eikaiwa.jp" },
-  { name: "ミッキーハウス",url: "https://www.mickeyhouse.jp",                   category: "学習", domain: "mickeyhouse.jp" },
-  { name: "Meetup",     url: "https://www.meetup.com",                          category: "学習", domain: "meetup.com" },
-  { name: "キッズルーム", url: "https://www.city.bunkyo.lg.jp/b022/p001660.html",category: "子ども",domain: "city.bunkyo.lg.jp" },
-  { name: "Amazon",     url: "https://www.amazon.co.jp",                        category: "生活", domain: "amazon.co.jp" },
-  { name: "楽天",        url: "https://www.rakuten.co.jp",                      category: "生活", domain: "rakuten.co.jp" },
+  { name: "Google",      url: "https://www.google.com",                           category: "検索", domain: "google.com" },
+  { name: "ChatGPT",     url: "https://chat.openai.com",                          category: "AI",   domain: "chat.openai.com" },
+  { name: "Claude",      url: "https://claude.ai",                                category: "AI",   domain: "claude.ai" },
+  { name: "Gemini",      url: "https://gemini.google.com",                        category: "AI",   domain: "gemini.google.com" },
+  { name: "NotebookLM",  url: "https://notebooklm.google.com",                    category: "AI",   domain: "notebooklm.google.com" },
+  { name: "AI Studio",   url: "https://aistudio.google.com",                      category: "AI",   domain: "aistudio.google.com" },
+  { name: "YouTube",     url: "https://www.youtube.com",                          category: "娯楽", domain: "youtube.com" },
+  { name: "Notion",      url: "https://www.notion.so",                            category: "日常", domain: "notion.so" },
+  { name: "Google Keep", url: "https://keep.google.com",                          category: "日常", domain: "keep.google.com" },
+  { name: "Dropbox",     url: "https://www.dropbox.com",                          category: "日常", domain: "dropbox.com" },
+  { name: "カフェ英会話",  url: "https://www.cafe-eikaiwa.jp",                    category: "学習", domain: "www.cafe-eikaiwa.jp" },
+  { name: "ミッキーハウス",url: "https://www.mickeyhouse.jp",                     category: "学習", domain: "www.mickeyhouse.jp" },
+  { name: "Meetup",      url: "https://www.meetup.com",                           category: "学習", domain: "meetup.com" },
+  { name: "キッズルーム",  url: "https://www.city.bunkyo.lg.jp/b022/p001660.html",category: "子ども",domain: "www.city.bunkyo.lg.jp" },
+  { name: "Amazon",      url: "https://www.amazon.co.jp",                         category: "生活", domain: "amazon.co.jp" },
+  { name: "楽天",         url: "https://www.rakuten.co.jp",                       category: "生活", domain: "rakuten.co.jp" },
 ];
 
 // カテゴリごとのフォールバックアイコンの色（背景色, 文字色）
@@ -105,16 +105,19 @@ const catColors = {
   "生活": ["#D3D1C7", "#444441"],
 };
 
-// ドメインからファビコンURLを3種類生成する
+// ドメインからファビコンURLを順番に生成する
 function getFavSources(domain) {
+  const root = domain.replace(/^www\./, "");
   return [
     `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=64`,
     `https://www.google.com/s2/favicons?sz=64&domain=${domain}`,
-    `https://icons.duckduckgo.com/ip3/${domain}.ico`,
+    `https://${domain}/favicon.ico`,       // サイト直接取得
+    `https://www.${root}/favicon.ico`,     // www付きで直接取得
+    `https://icons.duckduckgo.com/ip3/${root}.ico`,
   ];
 }
 
-// アイコン要素を作成（3段階フォールバック付き）
+// アイコン要素を作成（5段階フォールバック付き）
 function buildIcon(link) {
   const wrap = document.createElement("div");
   wrap.className = "icon-wrap";
@@ -126,7 +129,7 @@ function buildIcon(link) {
 
   function tryNext() {
     if (idx < srcs.length) {
-      img.src = srcs[idx++]; // 次のURLを試す
+      img.src = srcs[idx++];
     } else {
       // すべて失敗 → 頭文字バッジを表示
       wrap.removeChild(img);
@@ -140,8 +143,8 @@ function buildIcon(link) {
     }
   }
 
-  img.onerror = tryNext; // 読み込み失敗時に次のURLへ
-  tryNext();             // 最初のURLを試す
+  img.onerror = tryNext;
+  tryNext();
   wrap.appendChild(img);
   return wrap;
 }
