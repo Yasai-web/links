@@ -89,12 +89,11 @@ const links = [
   { name: "カフェ英会話",  url: "https://www.cafe-eikaiwa.jp",                    category: "学習", domain: "cafe-eikaiwa.jp" },
   { name: "ミッキーハウス",url: "https://www.mickeyhouse.jp",                     category: "学習", domain: "mickeyhouse.jp" },
   { name: "Meetup",      url: "https://www.meetup.com",                           category: "学習", domain: "meetup.com" },
-  { name: "キッズルーム",  url: "https://www.city.bunkyo.lg.jp/b022/p001660.html",category: "子ども",domain: "www.city.bunkyo.lg.jp" },
+  { name: "キッズルーム",  url: "https://www.city.bunkyo.lg.jp/b022/p001660.html",category: "子ども",domain: "city.bunkyo.lg.jp" },
   { name: "Amazon",      url: "https://www.amazon.co.jp",                         category: "生活", domain: "amazon.co.jp" },
   { name: "楽天",         url: "https://www.rakuten.co.jp",                       category: "生活", domain: "rakuten.co.jp" },
 ];
 
-// カテゴリごとのフォールバックアイコンの色（背景色, 文字色）
 const catColors = {
   "検索": ["#9FE1CB", "#085041"],
   "AI":   ["#B5D4F4", "#0C447C"],
@@ -105,7 +104,6 @@ const catColors = {
   "生活": ["#D3D1C7", "#444441"],
 };
 
-// ドメインからファビコンURLを順番に生成する（wwwなしで渡すのがポイント）
 function getFavSources(domain) {
   return [
     `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=64`,
@@ -116,7 +114,6 @@ function getFavSources(domain) {
   ];
 }
 
-// アイコン要素を作成（5段階フォールバック付き）
 function buildIcon(link) {
   const wrap = document.createElement("div");
   wrap.className = "icon-wrap";
@@ -126,29 +123,38 @@ function buildIcon(link) {
   const srcs = getFavSources(link.domain);
   let idx = 0;
 
+  function showFallback() {
+    if (wrap.contains(img)) wrap.removeChild(img);
+    const fb = document.createElement("div");
+    fb.className = "icon-fb";
+    const col = catColors[link.category] || ["#ddd", "#333"];
+    fb.style.background = col[0];
+    fb.style.color = col[1];
+    fb.textContent = link.name[0].toUpperCase();
+    wrap.appendChild(fb);
+  }
+
   function tryNext() {
     if (idx < srcs.length) {
       img.src = srcs[idx++];
     } else {
-      // すべて失敗 → 頭文字バッジを表示
-      wrap.removeChild(img);
-      const fb = document.createElement("div");
-      fb.className = "icon-fb";
-      const col = catColors[link.category] || ["#ddd", "#333"];
-      fb.style.background = col[0];
-      fb.style.color = col[1];
-      fb.textContent = link.name[0].toUpperCase();
-      wrap.appendChild(fb);
+      showFallback();
     }
   }
 
+  // 読み込み失敗 → 次のURLへ
   img.onerror = tryNext;
+
+  // 読み込み成功でも 4px 以下は透明プレースホルダーとみなして次のURLへ
+  img.onload = function () {
+    if (img.naturalWidth <= 4 || img.naturalHeight <= 4) tryNext();
+  };
+
   tryNext();
   wrap.appendChild(img);
   return wrap;
 }
 
-// カテゴリフィルター生成
 let active = "すべて";
 const cats = ["すべて", ...[...new Set(links.map(l => l.category))]];
 const filtersEl = document.getElementById("filters");
