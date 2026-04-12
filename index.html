@@ -55,8 +55,20 @@ body { font-family: sans-serif; background: #f5f5f5; padding: 1.5rem; }
 }
 .card:hover { background: #f5f5f5; }
 
-.icon-wrap { width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; }
-.icon-wrap img { width: 26px; height: 26px; border-radius: 4px; object-fit: contain; }
+/* 横長ロゴに対応するため幅を広めに確保 */
+.icon-wrap {
+  width: 48px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-wrap img {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  object-fit: contain; /* 縦横比を保ったまま枠内に収める */
+}
 .icon-fb {
   width: 26px; height: 26px;
   border-radius: 6px;
@@ -86,10 +98,11 @@ const links = [
   { name: "Notion",      url: "https://www.notion.so",                            category: "日常", domain: "notion.so" },
   { name: "Google Keep", url: "https://keep.google.com",                          category: "日常", domain: "keep.google.com" },
   { name: "Dropbox",     url: "https://www.dropbox.com",                          category: "日常", domain: "dropbox.com" },
-  { name: "カフェ英会話",  url: "https://www.cafe-eikaiwa.jp",                    category: "学習", domain: "cafe-eikaiwa.jp" },
+  { name: "カフェ英会話",  url: "https://www.cafe-eikaiwa.jp",                    category: "学習", domain: "cafe-eikaiwa.jp",
+    icon: "https://cafeeikaiwa.co.jp/wp-content/uploads/2025/12/cafe_eikaiwa_08-2048x568.webp" },
   { name: "ミッキーハウス",url: "https://www.mickeyhouse.jp",                     category: "学習", domain: "mickeyhouse.jp" },
   { name: "Meetup",      url: "https://www.meetup.com",                           category: "学習", domain: "meetup.com" },
-  { name: "キッズルーム",  url: "https://www.city.bunkyo.lg.jp/b022/p001660.html",category: "子ども",domain: "city.bunkyo.lg.jp" },
+  { name: "キッズルーム",  url: "https://www.city.bunkyo.lg.jp/b022/p001660.html",category: "子ども",domain: "www.city.bunkyo.lg.jp" },
   { name: "Amazon",      url: "https://www.amazon.co.jp",                         category: "生活", domain: "amazon.co.jp" },
   { name: "楽天",         url: "https://www.rakuten.co.jp",                       category: "生活", domain: "rakuten.co.jp" },
 ];
@@ -104,14 +117,19 @@ const catColors = {
   "生活": ["#D3D1C7", "#444441"],
 };
 
-function getFavSources(domain) {
-  return [
-    `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=64`,
-    `https://www.google.com/s2/favicons?sz=64&domain=${domain}`,
-    `https://icons.duckduckgo.com/ip3/${domain}.ico`,
-    `https://${domain}/favicon.ico`,
-    `https://www.${domain}/favicon.ico`,
-  ];
+// icon フィールドがあれば最優先、なければファビコンAPIを順番に試す
+function getFavSources(link) {
+  const d = link.domain;
+  const srcs = [];
+  if (link.icon) srcs.push(link.icon);
+  srcs.push(
+    `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${d}&size=64`,
+    `https://www.google.com/s2/favicons?sz=64&domain=${d}`,
+    `https://icons.duckduckgo.com/ip3/${d}.ico`,
+    `https://${d}/favicon.ico`,
+    `https://www.${d}/favicon.ico`
+  );
+  return srcs;
 }
 
 function buildIcon(link) {
@@ -120,7 +138,7 @@ function buildIcon(link) {
   const img = document.createElement("img");
   img.alt = link.name;
 
-  const srcs = getFavSources(link.domain);
+  const srcs = getFavSources(link);
   let idx = 0;
 
   function showFallback() {
@@ -135,16 +153,11 @@ function buildIcon(link) {
   }
 
   function tryNext() {
-    if (idx < srcs.length) {
-      img.src = srcs[idx++];
-    } else {
-      showFallback();
-    }
+    if (idx < srcs.length) { img.src = srcs[idx++]; } else { showFallback(); }
   }
 
   // 読み込み失敗 → 次のURLへ
   img.onerror = tryNext;
-
   // 読み込み成功でも 4px 以下は透明プレースホルダーとみなして次のURLへ
   img.onload = function () {
     if (img.naturalWidth <= 4 || img.naturalHeight <= 4) tryNext();
