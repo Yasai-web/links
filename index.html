@@ -59,7 +59,16 @@ fetch('links.json')
       a.target = "_blank";
 
       const icon = document.createElement('img');
-      if (link.icon.startsWith("http")) {
+
+　　　if (link.icon && link.icon.startsWith("http")) {
+  　　　icon.src = link.icon;
+　　　} else {
+  　　　icon.src = "https://www.google.com/s2/favicons?domain=" + link.url;
+　　　}
+
+　　　icon.onerror = () => {
+  　　　icon.src = "https://www.google.com/s2/favicons?domain=" + new URL(link.url).hostname;
+　　　};
 　　　　  icon.src = link.icon;
 　　　} else {
   　　　icon.src = "https://www.google.com/s2/favicons?domain=" + link.icon;
