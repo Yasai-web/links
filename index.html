@@ -33,6 +33,10 @@ a {
   border-radius: 10px;
 }
 
+a:hover {
+  background: #e0f0ff;
+}
+
 img {
   width: 24px;
   height: 24px;
@@ -60,26 +64,23 @@ fetch('links.json')
 
       const icon = document.createElement('img');
 
-　　　if (link.icon && link.icon.startsWith("http")) {
-  　　　icon.src = link.icon;
-　　　} else {
-  　　　icon.src = "https://www.google.com/s2/favicons?domain=" + link.url;
-　　　}
+      // アイコン設定
+      if (link.icon && link.icon.startsWith("http")) {
+        icon.src = link.icon;
+      } else {
+        icon.src = "https://www.google.com/s2/favicons?domain=" + link.url;
+      }
 
-　　　icon.onerror = () => {
-  　　　icon.src = "https://www.google.com/s2/favicons?domain=" + new URL(link.url).hostname;
-　　　};
-　　　　  icon.src = link.icon;
-　　　} else {
-  　　　icon.src = "https://www.google.com/s2/favicons?domain=" + link.icon;
-　　　}
+      // エラー時のフォールバック
+      icon.onerror = () => {
+        icon.src = "https://www.google.com/s2/favicons?domain=" + new URL(link.url).hostname;
+      };
 
       const text = document.createElement('div');
       text.innerText = link.name;
 
       a.appendChild(icon);
       a.appendChild(text);
-
       container.appendChild(a);
     });
   });
