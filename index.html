@@ -8,6 +8,23 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: sans-serif; background: #f5f5f5; padding: 1.5rem; }
 
+.page-nav {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+}
+.page-tab {
+  font-size: 13px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: white;
+  color: #555;
+  cursor: pointer;
+}
+.page-tab:hover { background: #f0f0f0; }
+.page-tab.active { background: #3C3489; border-color: #3C3489; color: white; }
+
 .header {
   display: flex;
   align-items: center;
@@ -33,7 +50,7 @@ body { font-family: sans-serif; background: #f5f5f5; padding: 1.5rem; }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* スマホ：3列固定 */
+  grid-template-columns: repeat(3, 1fr);
   gap: 8px;
 }
 @media (min-width: 480px) { .grid { grid-template-columns: repeat(4, 1fr); } }
@@ -55,7 +72,6 @@ body { font-family: sans-serif; background: #f5f5f5; padding: 1.5rem; }
 }
 .card:hover { background: #f5f5f5; }
 
-/* 横長ロゴに対応するため幅を広めに確保 */
 .icon-wrap {
   width: 48px;
   height: 26px;
@@ -67,7 +83,7 @@ body { font-family: sans-serif; background: #f5f5f5; padding: 1.5rem; }
   width: 100%;
   height: 100%;
   border-radius: 4px;
-  object-fit: contain; /* 縦横比を保ったまま枠内に収める */
+  object-fit: contain;
 }
 .icon-fb {
   width: 26px; height: 26px;
@@ -76,17 +92,77 @@ body { font-family: sans-serif; background: #f5f5f5; padding: 1.5rem; }
   font-size: 12px; font-weight: 500;
 }
 .name { font-size: 12px; text-align: center; line-height: 1.3; }
+
+.page { display: none; }
+.page.active { display: block; }
+
+.sub-section {
+  margin-bottom: 1.5rem;
+}
+.sub-section-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+  padding-left: 2px;
+  letter-spacing: 0.02em;
+}
 </style>
 </head>
 <body>
 
-<div class="header">
-  <span class="title">リンク</span>
-  <div class="filters" id="filters"></div>
+<div class="page-nav">
+  <button class="page-tab active" onclick="switchPage('main', this)">リンク</button>
 </div>
-<div class="grid" id="grid"></div>
+
+<!-- メインページ -->
+<div class="page active" id="page-main">
+  <div class="header">
+    <span class="title">リンク</span>
+    <div class="filters" id="filters"></div>
+  </div>
+  <div class="grid" id="grid"></div>
+  <div style="margin-top: 2rem; text-align: right;">
+    <button onclick="switchToSeminar()" style="font-size: 11px; color: #bbb; background: none; border: none; cursor: pointer; padding: 4px 2px;">セミナー</button>
+  </div>
+</div>
+
+<!-- サブページ -->
+<div class="page" id="page-sub">
+  <div class="header">
+    <span class="title">セミナー</span>
+    <button onclick="switchPage('main', null); document.querySelector('.page-tab').classList.add('active')" style="font-size: 12px; color: #888; background: none; border: none; cursor: pointer;">← 戻る</button>
+  </div>
+
+  <div class="sub-section">
+    <div class="sub-section-title">IR投資</div>
+    <div class="grid" id="sub-grid-ir"></div>
+  </div>
+
+  <div class="sub-section">
+    <div class="sub-section-title">潜在意識</div>
+    <div class="grid" id="sub-grid-rkss"></div>
+  </div>
+
+  <div class="sub-section">
+    <div class="sub-section-title">その他</div>
+    <div class="grid" id="sub-grid-other"></div>
+  </div>
+</div>
 
 <script>
+function switchPage(id, btn) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-' + id).classList.add('active');
+  if (btn) btn.classList.add('active');
+}
+
+function switchToSeminar() {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.getElementById('page-sub').classList.add('active');
+}
+
 const links = [
   { name: "Google",      url: "https://www.google.com",                           category: "検索", domain: "google.com" },
   { name: "ChatGPT",     url: "https://chat.openai.com",                          category: "AI",   domain: "chat.openai.com" },
@@ -107,6 +183,22 @@ const links = [
   { name: "楽天",         url: "https://www.rakuten.co.jp",                       category: "生活", domain: "rakuten.co.jp" },
 ];
 
+const subLinks = {
+  ir: [
+    { name: "IR投資スクール",     url: "http://www.my-ir.com/iris/member/",            domain: "my-ir.com" },
+    { name: "IR投資\nゴールド",   url: "http://www.my-ir.com/iris/goldmember/login.cgi",domain: "my-ir.com", badge: "GOLD" },
+    { name: "短期トレーダー\n養成講座", url: "http://www.my-ir.com/iris2/member/",     domain: "my-ir.com" },
+  ],
+  rkss: [
+    { name: "潜在意識\nシークレット", url: "http://www.my-ir.com/rkss/member/",        domain: "my-ir.com" },
+    { name: "潜在意識\nゴールド",     url: "http://www.my-ir.com/rkss/gold_member/login.cgi", domain: "my-ir.com", badge: "GOLD" },
+  ],
+  other: [
+    { name: "IR大学",             url: "http://www.my-ir.com/irtop/",                 domain: "my-ir.com" },
+    { name: "Youtubranding",      url: "http://www.my-ir.com/youtubranding/member/",  domain: "my-ir.com" },
+  ],
+};
+
 const catColors = {
   "検索": ["#9FE1CB", "#085041"],
   "AI":   ["#B5D4F4", "#0C447C"],
@@ -117,7 +209,9 @@ const catColors = {
   "生活": ["#D3D1C7", "#444441"],
 };
 
-// icon フィールドがあれば最優先、なければファビコンAPIを順番に試す
+const subColor = ["#CECBF6", "#3C3489"];
+const goldColor = ["#FAC775", "#633806"];
+
 function getFavSources(link) {
   const d = link.domain;
   const srcs = [];
@@ -132,7 +226,7 @@ function getFavSources(link) {
   return srcs;
 }
 
-function buildIcon(link) {
+function buildIcon(link, fallbackColor) {
   const wrap = document.createElement("div");
   wrap.className = "icon-wrap";
   const img = document.createElement("img");
@@ -145,7 +239,7 @@ function buildIcon(link) {
     if (wrap.contains(img)) wrap.removeChild(img);
     const fb = document.createElement("div");
     fb.className = "icon-fb";
-    const col = catColors[link.category] || ["#ddd", "#333"];
+    const col = fallbackColor || subColor;
     fb.style.background = col[0];
     fb.style.color = col[1];
     fb.textContent = link.name[0].toUpperCase();
@@ -156,9 +250,7 @@ function buildIcon(link) {
     if (idx < srcs.length) { img.src = srcs[idx++]; } else { showFallback(); }
   }
 
-  // 読み込み失敗 → 次のURLへ
   img.onerror = tryNext;
-  // 読み込み成功でも 4px 以下は透明プレースホルダーとみなして次のURLへ
   img.onload = function () {
     if (img.naturalWidth <= 4 || img.naturalHeight <= 4) tryNext();
   };
@@ -168,6 +260,33 @@ function buildIcon(link) {
   return wrap;
 }
 
+function buildCard(link, fallbackColor) {
+  const a = document.createElement("a");
+  a.className = "card";
+  a.href = link.url;
+  a.target = "_blank";
+  a.rel = "noopener";
+
+  const nm = document.createElement("div");
+  nm.className = "name";
+  nm.textContent = link.name.replace(/\\n/g, '\n');
+
+  if (link.badge) {
+    const badge = document.createElement("div");
+    badge.style.cssText = "font-size:9px;font-weight:500;padding:1px 5px;border-radius:4px;background:" + goldColor[0] + ";color:" + goldColor[1];
+    badge.textContent = link.badge;
+    a.appendChild(buildIcon(link, goldColor));
+    a.appendChild(nm);
+    a.appendChild(badge);
+  } else {
+    a.appendChild(buildIcon(link, fallbackColor));
+    a.appendChild(nm);
+  }
+
+  return a;
+}
+
+// メインページ
 let active = "すべて";
 const cats = ["すべて", ...[...new Set(links.map(l => l.category))]];
 const filtersEl = document.getElementById("filters");
@@ -177,19 +296,7 @@ function render() {
   gridEl.innerHTML = "";
   const filtered = active === "すべて" ? links : links.filter(l => l.category === active);
   filtered.forEach(link => {
-    const a = document.createElement("a");
-    a.className = "card";
-    a.href = link.url;
-    a.target = "_blank";
-    a.rel = "noopener";
-
-    const nm = document.createElement("div");
-    nm.className = "name";
-    nm.textContent = link.name;
-
-    a.appendChild(buildIcon(link));
-    a.appendChild(nm);
-    gridEl.appendChild(a);
+    gridEl.appendChild(buildCard(link, catColors[link.category]));
   });
 }
 
@@ -207,6 +314,14 @@ cats.forEach(cat => {
 });
 
 render();
+
+// サブページ
+Object.entries(subLinks).forEach(([key, items]) => {
+  const gridEl = document.getElementById("sub-grid-" + key);
+  items.forEach(link => {
+    gridEl.appendChild(buildCard(link, subColor));
+  });
+});
 </script>
 </body>
 </html>
