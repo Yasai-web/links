@@ -1,327 +1,43 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リンク</title>
-<style>
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: sans-serif; background: #f5f5f5; padding: 1.5rem; }
-
-.page-nav {
-  display: flex;
-  gap: 6px;
-  margin-bottom: 1.25rem;
-}
-.page-tab {
-  font-size: 13px;
-  padding: 5px 14px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  background: white;
-  color: #555;
-  cursor: pointer;
-}
-.page-tab:hover { background: #f0f0f0; }
-.page-tab.active { background: #3C3489; border-color: #3C3489; color: white; }
-
-.header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-bottom: 1.25rem;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-.title { font-size: 18px; font-weight: 500; }
-
-.filters { display: flex; flex-wrap: wrap; gap: 6px; }
-.pill {
-  font-size: 12px;
-  padding: 4px 12px;
-  border-radius: 20px;
-  border: 1px solid #ccc;
-  background: white;
-  color: #555;
-  cursor: pointer;
-}
-.pill:hover { background: #f0f0f0; }
-.pill.active { background: #CECBF6; border-color: #AFA9EC; color: #3C3489; }
-
-.grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-}
-@media (min-width: 480px) { .grid { grid-template-columns: repeat(4, 1fr); } }
-@media (min-width: 640px) { .grid { grid-template-columns: repeat(5, 1fr); } }
-@media (min-width: 800px) { .grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); } }
-
-.card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  padding: 14px 8px;
-  background: white;
-  border: 1px solid #e0e0e0;
-  border-radius: 12px;
-  text-decoration: none;
-  color: black;
-  transition: background 0.15s;
-}
-.card:hover { background: #f5f5f5; }
-
-.icon-wrap {
-  width: 48px;
-  height: 26px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-.icon-wrap img {
-  width: 100%;
-  height: 100%;
-  border-radius: 4px;
-  object-fit: contain;
-}
-.icon-fb {
-  width: 26px; height: 26px;
-  border-radius: 6px;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 12px; font-weight: 500;
-}
-.name { font-size: 12px; text-align: center; line-height: 1.3; }
-
-.page { display: none; }
-.page.active { display: block; }
-
-.sub-section {
-  margin-bottom: 1.5rem;
-}
-.sub-section-title {
-  font-size: 13px;
-  font-weight: 500;
-  color: #555;
-  margin-bottom: 8px;
-  padding-left: 2px;
-  letter-spacing: 0.02em;
-}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>リンク</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-<div class="page-nav">
-  <button class="page-tab active" onclick="switchPage('main', this)">リンク</button>
-</div>
-
-<!-- メインページ -->
-<div class="page active" id="page-main">
-  <div class="header">
-    <span class="title">リンク</span>
-    <div class="filters" id="filters"></div>
-  </div>
-  <div class="grid" id="grid"></div>
-  <div style="margin-top: 2rem; text-align: right;">
-    <button onclick="switchToSeminar()" style="font-size: 11px; color: #bbb; background: none; border: none; cursor: pointer; padding: 4px 2px;">セミナー</button>
-  </div>
-</div>
-
-<!-- サブページ -->
-<div class="page" id="page-sub">
-  <div class="header">
-    <span class="title">セミナー</span>
-    <button onclick="switchPage('main', null); document.querySelector('.page-tab').classList.add('active')" style="font-size: 12px; color: #888; background: none; border: none; cursor: pointer;">← 戻る</button>
+  <div class="page-nav">
+    <button class="page-tab active" data-page="main" onclick="switchPage('main')">リンク</button>
   </div>
 
-  <div class="sub-section">
-    <div class="sub-section-title">投資</div>
-    <div class="grid" id="sub-grid-ir"></div>
+  <!-- メインページ -->
+  <div class="page active" id="page-main">
+    <div class="header">
+      <span class="title">リンク</span>
+      <div class="filters" id="filters"></div>
+    </div>
+    <div class="grid" id="grid"></div>
+    <div class="seminar-link-wrap">
+      <button class="seminar-link-btn" onclick="switchPage('seminar')">セミナー</button>
+    </div>
   </div>
 
-  <div class="sub-section">
-    <div class="sub-section-title">潜在意識</div>
-    <div class="grid" id="sub-grid-rkss"></div>
+  <!-- セミナーページ -->
+  <div class="page" id="page-seminar">
+    <div class="header">
+      <span class="title">セミナー</span>
+      <button class="back-btn" onclick="switchPage('main')">← 戻る</button>
+    </div>
+    <!-- セクションはapp.jsが動的に生成 -->
+    <div id="seminar-sections"></div>
   </div>
 
-  <div class="sub-section">
-    <div class="sub-section-title">その他</div>
-    <div class="grid" id="sub-grid-other"></div>
-  </div>
-</div>
+  <!-- データ定義（リンクの追加・編集はこのファイルで行う） -->
+  <script src="links.js"></script>
+  <!-- UIロジック -->
+  <script src="app.js"></script>
 
-<script>
-function switchPage(id, btn) {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.querySelectorAll('.page-tab').forEach(b => b.classList.remove('active'));
-  document.getElementById('page-' + id).classList.add('active');
-  if (btn) btn.classList.add('active');
-}
-
-function switchToSeminar() {
-  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-  document.getElementById('page-sub').classList.add('active');
-}
-
-const links = [
-  { name: "Google",      url: "https://www.google.com",                           category: "検索", domain: "google.com" },
-  { name: "ChatGPT",     url: "https://chat.openai.com",                          category: "AI",   domain: "chat.openai.com" },
-  { name: "Claude",      url: "https://claude.ai",                                category: "AI",   domain: "claude.ai" },
-  { name: "Gemini",      url: "https://gemini.google.com",                        category: "AI",   domain: "gemini.google.com" },
-  { name: "NotebookLM",  url: "https://notebooklm.google.com",                    category: "AI",   domain: "notebooklm.google.com" },
-  { name: "AI Studio",   url: "https://aistudio.google.com",                      category: "AI",   domain: "aistudio.google.com" },
-  { name: "YouTube",     url: "https://www.youtube.com",                          category: "娯楽", domain: "youtube.com" },
-  { name: "Notion",      url: "https://www.notion.so",                            category: "日常", domain: "notion.so" },
-  { name: "Google Keep", url: "https://keep.google.com",                          category: "日常", domain: "keep.google.com" },
-  { name: "Dropbox",     url: "https://www.dropbox.com",                          category: "日常", domain: "dropbox.com" },
-  { name: "カフェ英会話",  url: "https://www.cafe-eikaiwa.jp",                    category: "学習", domain: "cafe-eikaiwa.jp",
-    icon: "https://cafeeikaiwa.co.jp/wp-content/uploads/2025/12/cafe_eikaiwa_04-1024x345.webp" },
-  { name: "ミッキーハウス",url: "https://www.mickeyhouse.jp",                     category: "学習", domain: "mickeyhouse.jp" },
-  { name: "Meetup",      url: "https://www.meetup.com",                           category: "学習", domain: "meetup.com" },
-  { name: "キッズルーム",  url: "https://www.city.bunkyo.lg.jp/b022/p001660.html",category: "子ども",domain: "www.city.bunkyo.lg.jp" },
-  { name: "Amazon",      url: "https://www.amazon.co.jp",                         category: "生活", domain: "amazon.co.jp" },
-  { name: "楽天",         url: "https://www.rakuten.co.jp",                       category: "生活", domain: "rakuten.co.jp" },
-];
-
-const subLinks = {
-  ir: [
-    { name: "ir投資スクール",     url: "http://www.my-ir.com/iris/member/",            domain: "my-ir.com" },
-    { name: "ir投資\nゴールド",   url: "http://www.my-ir.com/iris/goldmember/login.cgi",domain: "my-ir.com", badge: "GOLD" },
-    { name: "短期トレーダー\n養成講座", url: "http://www.my-ir.com/iris2/member/",     domain: "my-ir.com" },
-  ],
-  rkss: [
-    { name: "潜在意識\nシークレット", url: "http://www.my-ir.com/rkss/member/",        domain: "my-ir.com" },
-    { name: "潜在意識\nゴールド",     url: "http://www.my-ir.com/rkss/gold_member/login.cgi", domain: "my-ir.com", badge: "GOLD" },
-  ],
-  other: [
-    { name: "ir大学",             url: "http://www.my-ir.com/irtop/",                 domain: "my-ir.com" },
-    { name: "Youtubranding",      url: "http://www.my-ir.com/youtubranding/member/",  domain: "my-ir.com" },
-  ],
-};
-
-const catColors = {
-  "検索": ["#9FE1CB", "#085041"],
-  "AI":   ["#B5D4F4", "#0C447C"],
-  "娯楽": ["#FAC775", "#633806"],
-  "日常": ["#C0DD97", "#27500A"],
-  "学習": ["#F5C4B3", "#712B13"],
-  "子ども":["#F4C0D1", "#72243E"],
-  "生活": ["#D3D1C7", "#444441"],
-};
-
-const subColor = ["#CECBF6", "#3C3489"];
-const goldColor = ["#FAC775", "#633806"];
-
-function getFavSources(link) {
-  const d = link.domain;
-  const srcs = [];
-  if (link.icon) srcs.push(link.icon);
-  srcs.push(
-    `https://t1.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${d}&size=64`,
-    `https://www.google.com/s2/favicons?sz=64&domain=${d}`,
-    `https://icons.duckduckgo.com/ip3/${d}.ico`,
-    `https://${d}/favicon.ico`,
-    `https://www.${d}/favicon.ico`
-  );
-  return srcs;
-}
-
-function buildIcon(link, fallbackColor) {
-  const wrap = document.createElement("div");
-  wrap.className = "icon-wrap";
-  const img = document.createElement("img");
-  img.alt = link.name;
-
-  const srcs = getFavSources(link);
-  let idx = 0;
-
-  function showFallback() {
-    if (wrap.contains(img)) wrap.removeChild(img);
-    const fb = document.createElement("div");
-    fb.className = "icon-fb";
-    const col = fallbackColor || subColor;
-    fb.style.background = col[0];
-    fb.style.color = col[1];
-    fb.textContent = link.name[0].toUpperCase();
-    wrap.appendChild(fb);
-  }
-
-  function tryNext() {
-    if (idx < srcs.length) { img.src = srcs[idx++]; } else { showFallback(); }
-  }
-
-  img.onerror = tryNext;
-  img.onload = function () {
-    if (img.naturalWidth <= 4 || img.naturalHeight <= 4) tryNext();
-  };
-
-  tryNext();
-  wrap.appendChild(img);
-  return wrap;
-}
-
-function buildCard(link, fallbackColor) {
-  const a = document.createElement("a");
-  a.className = "card";
-  a.href = link.url;
-  a.target = "_blank";
-  a.rel = "noopener";
-
-  const nm = document.createElement("div");
-  nm.className = "name";
-  nm.textContent = link.name.replace(/\\n/g, '\n');
-
-  if (link.badge) {
-    const badge = document.createElement("div");
-    badge.style.cssText = "font-size:9px;font-weight:500;padding:1px 5px;border-radius:4px;background:" + goldColor[0] + ";color:" + goldColor[1];
-    badge.textContent = link.badge;
-    a.appendChild(buildIcon(link, goldColor));
-    a.appendChild(nm);
-    a.appendChild(badge);
-  } else {
-    a.appendChild(buildIcon(link, fallbackColor));
-    a.appendChild(nm);
-  }
-
-  return a;
-}
-
-// メインページ
-let active = "すべて";
-const cats = ["すべて", ...[...new Set(links.map(l => l.category))]];
-const filtersEl = document.getElementById("filters");
-const gridEl = document.getElementById("grid");
-
-function render() {
-  gridEl.innerHTML = "";
-  const filtered = active === "すべて" ? links : links.filter(l => l.category === active);
-  filtered.forEach(link => {
-    gridEl.appendChild(buildCard(link, catColors[link.category]));
-  });
-}
-
-cats.forEach(cat => {
-  const btn = document.createElement("button");
-  btn.className = "pill" + (cat === active ? " active" : "");
-  btn.textContent = cat;
-  btn.onclick = () => {
-    active = cat;
-    document.querySelectorAll(".pill").forEach(p => p.classList.remove("active"));
-    btn.classList.add("active");
-    render();
-  };
-  filtersEl.appendChild(btn);
-});
-
-render();
-
-// サブページ
-Object.entries(subLinks).forEach(([key, items]) => {
-  const gridEl = document.getElementById("sub-grid-" + key);
-  items.forEach(link => {
-    gridEl.appendChild(buildCard(link, subColor));
-  });
-});
-</script>
 </body>
 </html>

@@ -1,0 +1,164 @@
+/* ============================================================
+   style.css
+   ============================================================ */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: sans-serif;
+  background: #f5f5f5;
+  padding: 1.5rem;
+}
+
+/* ---------- ページ切替タブ ---------- */
+.page-nav {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.25rem;
+}
+
+.page-tab {
+  font-size: 13px;
+  padding: 5px 14px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: white;
+  color: #555;
+  cursor: pointer;
+}
+.page-tab:hover { background: #f0f0f0; }
+.page-tab.active { background: #3C3489; border-color: #3C3489; color: white; }
+
+/* ---------- ヘッダー ---------- */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.title { font-size: 18px; font-weight: 500; }
+
+/* ---------- フィルターピル ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 6px; }
+
+.pill {
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  background: white;
+  color: #555;
+  cursor: pointer;
+}
+.pill:hover { background: #f0f0f0; }
+.pill.active { background: #CECBF6; border-color: #AFA9EC; color: #3C3489; }
+
+/* ---------- カードグリッド ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+@media (min-width: 480px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+@media (min-width: 640px) { .grid { grid-template-columns: repeat(5, 1fr); } }
+@media (min-width: 800px) { .grid { grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); } }
+
+/* ---------- リンクカード ---------- */
+.card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 14px 8px;
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+  text-decoration: none;
+  color: black;
+  transition: background 0.15s;
+}
+.card:hover { background: #f5f5f5; }
+
+/* ---------- アイコン ---------- */
+.icon-wrap {
+  width: 48px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.icon-wrap img {
+  width: 100%;
+  height: 100%;
+  border-radius: 4px;
+  object-fit: contain;
+}
+
+/* フォールバック文字アイコン */
+.icon-fb {
+  width: 26px;
+  height: 26px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+/* ---------- カード名称 ---------- */
+.name {
+  font-size: 12px;
+  text-align: center;
+  line-height: 1.3;
+  white-space: pre-line; /* \n で改行 */
+}
+
+/* ---------- バッジ ---------- */
+.badge {
+  font-size: 9px;
+  font-weight: 500;
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* ---------- ページ表示切替 ---------- */
+.page { display: none; }
+.page.active { display: block; }
+
+/* ---------- セミナーページ セクション ---------- */
+.sub-section { margin-bottom: 1.5rem; }
+
+.sub-section-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: #555;
+  margin-bottom: 8px;
+  padding-left: 2px;
+  letter-spacing: 0.02em;
+}
+
+/* ---------- セミナーへのフッターボタン ---------- */
+.seminar-link-wrap {
+  margin-top: 2rem;
+  text-align: right;
+}
+.seminar-link-btn {
+  font-size: 11px;
+  color: #bbb;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 4px 2px;
+}
+
+/* ---------- 戻るボタン ---------- */
+.back-btn {
+  font-size: 12px;
+  color: #888;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
