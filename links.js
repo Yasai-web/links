@@ -93,6 +93,30 @@ const MAIN_LINKS = [
     domain: "dropbox.com",
   },
   {
+    name: "Github",
+    url: "https://github.co.jp/",
+    category: "学習",
+    domain: "github.co.jp",
+  },  
+  {
+    name: "Figma",
+    url: "https://www.figma.com/ja-jp/",
+    category: "学習",
+    domain: "figma.com",
+  },  
+  {
+    name: "audible",
+    url: "https://www.audible.co.jp/",
+    category: "学習",
+    domain: "audible.co.jp",
+  },
+  {
+    name: "Netflix",
+    url: "https://www.netflix.com/browse",
+    category: "娯楽",
+    domain: "netflix.com",
+  },
+  {
     name: "カフェ英会話",
     url: "https://www.cafe-eikaiwa.jp",
     category: "学習",
