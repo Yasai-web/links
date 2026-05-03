@@ -33,12 +33,6 @@ const GOLD_COLOR = ["#FAC775", "#633806"];
 // ------------------------------------------------------------
 const MAIN_LINKS = [
   {
-    name: "Google",
-    url: "https://www.google.com",
-    category: "検索",
-    domain: "google.com",
-  },
-  {
     name: "ChatGPT",
     url: "https://chat.openai.com",
     category: "AI",
